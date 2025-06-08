@@ -9,9 +9,21 @@ import SwiftUI
 
 @main
 struct G1_Walk_SessionsApp: App {
+    @StateObject private var authService = AuthHandler()
+    @StateObject private var persistence = PersistenceService()
+    @StateObject private var sessionService = SessionService()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if authService.isAuthenticated {
+                MainTabView()
+                    .environmentObject(authService)
+                    .environmentObject(sessionService)
+                    .environmentObject(persistence)
+            } else {
+                LoginView()
+                    .environmentObject(authService)
+                    .environmentObject(persistence)
+            }
         }
     }
 }
