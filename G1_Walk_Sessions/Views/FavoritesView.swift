@@ -25,7 +25,8 @@ struct FavoritesView: View {
                     Text(session.title)
                 }
             }
+            .navigationTitle("Favorites")
         }
-//        .navigationTitle("Favorites")
+       
     }
 }

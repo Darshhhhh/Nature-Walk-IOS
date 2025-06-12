@@ -70,7 +70,6 @@ struct SessionDetailView: View {
                         UIApplication.shared.open(url)
                     }
                     .padding()
-                    .frame(maxWidth: .infinity)
                     .background(Color.green)
                     .foregroundColor(.white)
                     .cornerRadius(8)
