@@ -9,13 +9,17 @@
 import Foundation
 import CoreLocation
 
-struct Session: Identifiable {
+struct Session: Identifiable, Codable, Equatable {
     let id: UUID
     let title: String
     let description: String
-    let location: CLLocationCoordinate2D
+    let address: String
     let date: Date
     let contactPhone: String
+    let guideName: String
+    let rating: Int
+    let price: Double
+    let images: [String]
 
     var formattedDate: String {
         let df = DateFormatter()
@@ -24,3 +28,4 @@ struct Session: Identifiable {
         return df.string(from: date)
     }
 }
+

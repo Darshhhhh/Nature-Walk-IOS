@@ -19,6 +19,7 @@ struct LoginView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
+                // 🌿 Top icon
                 Image(systemName: "leaf.circle.fill")
                     .resizable()
                     .frame(width: 80, height: 80)

@@ -18,15 +18,23 @@ final class PersistenceService: ObservableObject {
     @Published var savedPassword: String {
         didSet { UserDefaults.standard.set(savedPassword, forKey: "savedPassword") }
     }
+
     @Published var favoriteSessionIDs: Set<UUID> {
         didSet { saveFavorites() }
+    }
+
+    var currentUserEmail: String? {
+        UserDefaults.standard.string(forKey: "currentUserEmail")
     }
 
     init() {
         self.rememberMe = UserDefaults.standard.bool(forKey: "rememberMe")
         self.savedEmail = UserDefaults.standard.string(forKey: "savedEmail") ?? ""
         self.savedPassword = UserDefaults.standard.string(forKey: "savedPassword") ?? ""
-        if let data = UserDefaults.standard.data(forKey: "favorites"),
+
+        // ✅ Use UserDefaults directly here to avoid using `self` before init
+        if let email = UserDefaults.standard.string(forKey: "currentUserEmail"),
+           let data = UserDefaults.standard.data(forKey: "favorites_\(email)"),
            let ids = try? JSONDecoder().decode(Set<UUID>.self, from: data) {
             self.favoriteSessionIDs = ids
         } else {
@@ -35,8 +43,9 @@ final class PersistenceService: ObservableObject {
     }
 
     private func saveFavorites() {
+        guard let email = currentUserEmail else { return }
         if let data = try? JSONEncoder().encode(favoriteSessionIDs) {
-            UserDefaults.standard.set(data, forKey: "favorites")
+            UserDefaults.standard.set(data, forKey: "favorites_\(email)")
         }
     }
 
@@ -51,11 +60,15 @@ final class PersistenceService: ObservableObject {
     func isFavorite(_ session: Session) -> Bool {
         favoriteSessionIDs.contains(session.id)
     }
-    
+
     func clearSavedCredentials() {
         rememberMe = false
         savedEmail = ""
         savedPassword = ""
+        UserDefaults.standard.removeObject(forKey: "currentUserEmail")
     }
 
+    func setCurrentUser(email: String) {
+        UserDefaults.standard.set(email, forKey: "currentUserEmail")
+    }
 }

@@ -9,29 +9,28 @@ import Foundation
 import Combine
 
 final class AuthHandler: ObservableObject {
-    
+
     @Published private(set) var isAuthenticated = false
     @Published private(set) var currentUser: User?
-    
+
     // MARK: - LogInHandler()
-    func login(email: String, password: String) {
+    func login(email: String, password: String, persistence: PersistenceService? = nil) {
         if let match = User.demoUsers.first(where: {
             $0.email == email && $0.password == password
         }) {
             currentUser = match
             isAuthenticated = true
+            persistence?.setCurrentUser(email: email)
         } else {
-            // Clear state on failure
             currentUser = nil
             isAuthenticated = false
         }
     }
-    
-    
+
     func logout(persistence: PersistenceService? = nil) {
         currentUser = nil
         isAuthenticated = false
         persistence?.clearSavedCredentials()
+        
     }
-
 }
