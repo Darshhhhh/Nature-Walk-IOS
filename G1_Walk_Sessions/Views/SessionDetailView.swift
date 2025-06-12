@@ -11,48 +11,51 @@ import SwiftUI
 struct SessionDetailView: View {
     let session: Session
     @EnvironmentObject var persistence: PersistenceService
-
+    
+    private var imageNames: [String] {
+        
+        return ["P1", "P2"]
+    }
+    
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
-                // 🖼️ Carousel of images
                 TabView {
-                    ForEach(session.images, id: \.self) { imageName in
-                        Image(imageName)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(height: 200)
-                            .clipped()
-                    }
-                }
-                .frame(height: 200)
-                .tabViewStyle(PageTabViewStyle())
-
+                    ForEach(session.images, id: \.self) { name in
+                                   Image(name)
+                                       .resizable()
+                                       .scaledToFill()
+                                       .frame(height: 250)
+                                       .clipped()
+                               }
+                           }
+                           .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+                           .frame(height: 250)
                 VStack(alignment: .leading, spacing: 8) {
                     Text(session.title)
                         .font(.title)
                         .bold()
-
+                    
                     Text("By \(session.guideName)")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
-
+                    
                     Text("📍 Address: \(session.address)")
                         .font(.subheadline)
-
+                    
                     Text("⭐️ Rating: \(session.rating)/5")
                     Text("💵 Price: $\(String(format: "%.2f", session.price)) per person")
                     Text("🗓 When: \(session.formattedDate)")
-
+                    
                     Text("📝 Description:")
                         .font(.headline)
                         .padding(.top, 8)
-
+                    
                     Text(session.description)
                         .font(.body)
                 }
                 .padding(.horizontal)
-
+                
                 // 📞 Call guide button
                 Button("Call \(session.guideName)") {
                     if let url = URL(string: "tel://\(session.contactPhone)") {
@@ -64,7 +67,7 @@ struct SessionDetailView: View {
                 .background(Color.green)
                 .foregroundColor(.white)
                 .cornerRadius(8)
-
+                
                 // ❤️ Favorite toggle
                 Button {
                     persistence.toggleFavorite(session)
@@ -76,7 +79,7 @@ struct SessionDetailView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .padding(.bottom)
-
+                
                 // 📤 Share button
                 let shareText = "\(session.title) - $\(String(format: "%.2f", session.price)) per person"
                 ShareLink(item: shareText) {
