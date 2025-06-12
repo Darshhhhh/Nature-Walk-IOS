@@ -30,7 +30,7 @@ struct SessionsListView: View {
                 NavigationLink(destination: SessionDetailView(session: session)) {
                     HStack {
                         VStack(alignment: .leading) {
-                            Text(session.title)
+                            Text("\(session.title) -  $\(String(format: "%.2f", session.price))")
                                 .font(.headline)
                             Text(session.formattedDate)
                                 .font(.subheadline)

@@ -20,7 +20,6 @@ struct SessionDetailView: View {
         ZStack {
             ScrollView {
                 VStack(spacing: 16) {
-                    // Image carousel
                     TabView {
                         ForEach(session.images, id: \.self) { name in
                             Image(name)
@@ -58,12 +57,10 @@ struct SessionDetailView: View {
                             .font(.body)
                     }
                     .padding(.horizontal)
-                    
-                    // Call guide button – opens the dialer with number pre‐populated
+
                     Button("Call \(session.guideName)") {
                         guard let url = URL(string: "tel://\(session.contactPhone)"),
                               UIApplication.shared.canOpenURL(url) else {
-                            // In SwiftUI you might show an alert via state binding instead
                             print("Cannot make phone calls on this device. \(session.contactPhone)")
                             return
                         }
