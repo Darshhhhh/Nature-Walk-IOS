@@ -26,9 +26,12 @@ final class AuthHandler: ObservableObject {
             isAuthenticated = false
         }
     }
-    // MARK: - LogOutHandler()
-    func logout() {
+    
+    
+    func logout(persistence: PersistenceService? = nil) {
         currentUser = nil
         isAuthenticated = false
+        persistence?.clearSavedCredentials()
     }
+
 }

@@ -51,4 +51,11 @@ final class PersistenceService: ObservableObject {
     func isFavorite(_ session: Session) -> Bool {
         favoriteSessionIDs.contains(session.id)
     }
+    
+    func clearSavedCredentials() {
+        rememberMe = false
+        savedEmail = ""
+        savedPassword = ""
+    }
+
 }

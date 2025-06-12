@@ -10,6 +10,7 @@ import SwiftUI
 
 struct MainTabView: View {
     @EnvironmentObject var auth: AuthHandler
+    @EnvironmentObject var persistence: PersistenceService
 
     var body: some View {
         TabView {
@@ -28,7 +29,7 @@ struct MainTabView: View {
             }
 
             Button(role: .destructive) {
-                auth.logout()
+                auth.logout(persistence: persistence) 
             } label: {
                 Label("Log Out", systemImage: "arrow.backward.square")
             }
