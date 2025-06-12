@@ -64,6 +64,9 @@ struct LoginView: View {
                             storage.savedEmail = email
                             storage.savedPassword = password
                         }
+                        storage.setCurrentUser(email: email)
+                        storage.loadFavoritesForCurrentUser()
+
                     } else {
                         errorMessage = "Invalid email or password."
                         showingError = true

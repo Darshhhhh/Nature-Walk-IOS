@@ -42,7 +42,7 @@ final class PersistenceService: ObservableObject {
         }
     }
 
-    private func saveFavorites() {
+    func saveFavorites() {
         guard let email = currentUserEmail else { return }
         if let data = try? JSONEncoder().encode(favoriteSessionIDs) {
             UserDefaults.standard.set(data, forKey: "favorites_\(email)")
@@ -71,4 +71,16 @@ final class PersistenceService: ObservableObject {
     func setCurrentUser(email: String) {
         UserDefaults.standard.set(email, forKey: "currentUserEmail")
     }
+  
+
+    func loadFavoritesForCurrentUser() {
+        if let email = currentUserEmail,
+           let data = UserDefaults.standard.data(forKey: "favorites_\(email)"),
+           let ids = try? JSONDecoder().decode(Set<UUID>.self, from: data) {
+            self.favoriteSessionIDs = ids
+        } else {
+            self.favoriteSessionIDs = []
+        }
+    }
+
 }
